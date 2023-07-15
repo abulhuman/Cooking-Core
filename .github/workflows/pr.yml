@@ -11,9 +11,9 @@ jobs:
       db:
         image: postgres:14.2-alpine
         env:
-          POSTGRES_DB: cooking_core
-          POSTGRES_USER: cooking_core
-          POSTGRES_PASSWORD: cooking_core
+          POSTGRES_DB: source
+          POSTGRES_USER: source
+          POSTGRES_PASSWORD: source
 
     steps:
       - uses: actions/checkout@v2
@@ -32,5 +32,5 @@ jobs:
       - name: Test
         run: make test
         env:
-          COOKING_CORE_SETTING_DATABASES: '{"default":{"HOST":"db"}}'
-          COOKING_CORE_SETTING_LOCAL_SETTINGS_PATH: './cooking_core/project/settings/templates/settings.github.py'
+          DJANGO_PROJECT_SETTING_DATABASES: '{"default":{"HOST":"db"}}'
+          DJANGO_PROJECT_SETTING_LOCAL_SETTINGS_PATH: './source/core/settings/templates/settings.github.py'

@@ -12,32 +12,36 @@ lint:
 
 .PHONY: migrate
 migrate:
-	poetry run python -m cooking_core.manage migrate
+	poetry run python -m source.manage migrate
 
 .PHONY: migrations
 migrations:
-	poetry run python -m cooking_core.manage makemigrations
+	poetry run python -m source.manage makemigrations
 
 .PHONY: run-server
 run-server:
-	poetry run python -m cooking_core.manage runserver
+	poetry run python -m source.manage runserver
 
 .PHONY: shell
 shell:
-	poetry run python -m cooking_core.manage shell
+	poetry run python -m source.manage shell
 
 .PHONY: superuser
 superuser:
-	poetry run python -m cooking_core.manage createsuperuser
+	poetry run python -m source.manage createsuperuser
 
 .PHONY: test
 test:
 	poetry run pytest -v -rs -n auto --show-capture=no
 
-.PHONY: up-dependencies-only
-up-dependencies-only:
+.PHONY: dev-db-up
+dev-db-up:
 	test -f .env || touch .env
-	docker-compose -f docker-compose.dev.yml up --force-recreate db
+	docker compose -f docker-compose.dev.yml --project-name project_dev_db up --force-recreate db -d
+
+.PHONY: dev-db-down
+dev-db-down:
+	docker compose --project-name project_dev_db down
 
 .PHONY: update
 update: install migrate install-pre-commit ;
